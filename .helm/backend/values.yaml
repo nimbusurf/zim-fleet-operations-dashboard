@@ -1,0 +1,78 @@
+namespace: cmed
+
+replicaCount: 1
+
+image:
+  repository: cmed-backend
+  tag: ""
+  pullPolicy: Never
+  pullSecrets: []
+
+service:
+  port: 5000
+  type: ClusterIP
+
+ingress:
+  className: traefik
+  host: api.cmed.example.com
+  path: /
+  tlsSecretName: cmed-tls
+
+envFrom:
+  - secretRef:
+      name: database-secrets
+
+env:
+  PORT: "5000"
+  FRONTEND_URL: "https://cmed.example.com"
+  ALLOWED_ORIGINS: "https://cmed.example.com,http://localhost:3000"
+  DB_HOST: "cmed-postgresql-svc"
+  DB_PORT: "5432"
+  DB_NAME: "cmed_dashboard"
+  DATABASE_URL: "postgresql://$(DATABASE_USER):$(DATABASE_PASSWORD)@cmed-postgresql-svc:5432/cmed_dashboard"
+  FLASK_ENV: "production"
+  LOG_LEVEL: "info"
+
+resources:
+  limits:
+    cpu: "400m"
+    memory: "512Mi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 3000
+  fsGroup: 2000
+  seccompProfile:
+    type: RuntimeDefault
+
+networkPolicy:
+  allowedFrom:
+    - app: cmed-frontend
+  allowedTo:
+    - app: cmed-postgresql
+      port: 5432
+
+probes:
+  startup:
+    command:
+      - /bin/sh
+      - -c
+      - echo "Starting up..."
+    failureThreshold: 30
+    periodSeconds: 5
+  readiness:
+    path: "/api/health"
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  liveness:
+    path: "/api/health"
+    initialDelaySeconds: 30
+    periodSeconds: 30
+    timeoutSeconds: 10
+    failureThreshold: 3

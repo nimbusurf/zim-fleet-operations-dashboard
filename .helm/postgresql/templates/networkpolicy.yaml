@@ -1,0 +1,28 @@
+{{- if .Values.networkPolicy }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cmed-postgresql-policy
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: cmed-postgresql
+    chart: "cmed-postgresql-1.0.0"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  podSelector:
+    matchLabels:
+      app: cmed-postgresql
+  policyTypes:
+    - Ingress
+  ingress:
+    {{- range .Values.networkPolicy.allowedFrom }}
+    - from:
+        - podSelector:
+            matchLabels:
+              app: {{ .app }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.service.port }}
+    {{- end }}
+{{- end }}

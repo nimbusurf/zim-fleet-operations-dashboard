@@ -1,0 +1,61 @@
+namespace: cmed
+
+replicaCount: 1
+
+image:
+  repository: cmed-frontend
+  tag: ""
+  pullPolicy: Never
+  pullSecrets: []
+
+service:
+  port: 80
+  type: ClusterIP
+
+ingress:
+  className: traefik
+  host: cmed.example.com
+  path: /
+  tlsSecretName: cmed-tls
+
+env:
+  NODE_ENV: "production"
+
+resources:
+  limits:
+    cpu: "300m"
+    memory: "384Mi"
+  requests:
+    cpu: "50m"
+    memory: "128Mi"
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 101
+  runAsGroup: 101
+  fsGroup: 101
+  seccompProfile:
+    type: RuntimeDefault
+
+networkPolicy:
+  allowedFrom:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: "kube-system"
+  allowedTo:
+    - app: cmed-backend
+      port: 5000
+
+probes:
+  readiness:
+    path: "/"
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  liveness:
+    path: "/"
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 10
+    failureThreshold: 3

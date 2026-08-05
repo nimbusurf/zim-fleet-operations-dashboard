@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cmed-postgresql
+description: PostgreSQL 15 for CMED Fleet Dashboard
+type: application
+version: 1.0.0
+appVersion: "15.0"
