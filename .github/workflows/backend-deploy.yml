@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  NAMESPACE: cmed
-  DOMAIN: api.cmed.example.com
+  NAMESPACE: zimfleet
+  DOMAIN: demo5.nimbusurf.com
   RELEASE_NAME: backend-release
   DEPLOYMENT_NAME: cmed-backend
   SERVICE_PORT: 5000

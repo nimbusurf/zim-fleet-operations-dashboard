@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  NAMESPACE: cmed
+  NAMESPACE: zimfleet
   RELEASE_NAME: backend-release
   DEPLOYMENT_NAME: cmed-backend
 

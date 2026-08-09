@@ -1,4 +1,4 @@
-namespace: cmed
+namespace: zimfleet
 
 replicaCount: 1
 

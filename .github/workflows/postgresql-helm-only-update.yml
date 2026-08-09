@@ -9,7 +9,7 @@ on:
         default: 'github-actions-helm-update'
 
 env:
-  NAMESPACE: cmed
+  NAMESPACE: zimfleet
   RELEASE_NAME: postgresql-release
   DEPLOYMENT_NAME: cmed-postgresql
 

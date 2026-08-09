@@ -1,4 +1,4 @@
-namespace: cmed
+namespace: zimfleet
 
 replicaCount: 1
 
@@ -14,7 +14,7 @@ service:
 
 ingress:
   className: traefik
-  host: api.cmed.example.com
+  host: api.demo5.nimbusurf.com
   path: /
   tlsSecretName: cmed-tls
 
@@ -24,8 +24,8 @@ envFrom:
 
 env:
   PORT: "5000"
-  FRONTEND_URL: "https://cmed.example.com"
-  ALLOWED_ORIGINS: "https://cmed.example.com,http://localhost:3000"
+  FRONTEND_URL: "https://demo5.nimbusurf.com"
+  ALLOWED_ORIGINS: "https://demo5.nimbusurf.com,http://localhost:3000"
   DB_HOST: "cmed-postgresql-svc"
   DB_PORT: "5432"
   DB_NAME: "cmed_dashboard"

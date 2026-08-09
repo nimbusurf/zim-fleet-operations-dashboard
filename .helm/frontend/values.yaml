@@ -1,4 +1,4 @@
-namespace: cmed
+namespace: zimfleet
 
 replicaCount: 1
 
@@ -14,7 +14,7 @@ service:
 
 ingress:
   className: traefik
-  host: cmed.example.com
+  host: demo5.nimbusurf.com
   path: /
   tlsSecretName: cmed-tls
 
